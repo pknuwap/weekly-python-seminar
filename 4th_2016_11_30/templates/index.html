@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang=ko>
+<head>
+  <title>Main</title>
+</head>
+<body>
+{% if user_name %}
+  <h1>Hello, {{ user_name }}!</h1>
+  <a href=/logout>Logout</a>
+{% else %}
+  <h1>Please <a href=/login>login</a> first.</h1>
+{% endif %}
+</body>
+</html>
