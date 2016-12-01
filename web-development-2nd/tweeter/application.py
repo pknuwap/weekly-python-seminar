@@ -46,6 +46,14 @@ def register():
         name = request.form.get('name', None)
         password = request.form.get('password', None)
 
+        if not id or not name or not password:
+            flash('잘못된 요청입니다.', 'danger')
+            return redirect(url_for('register'))
+
+        if not id.islower():
+            flash('아이디는 영어 소문자와 숫자만으로 이루어져야 합니다.', 'danger')
+            return redirect(url_for('register'))
+
         if db.users.find({'id': id}).count() != 0:
             flash('이미 존재하는 아이디입니다.', 'danger')
             return redirect(url_for('register'))
@@ -72,6 +80,10 @@ def login():
     if request.method == 'POST':
         id = request.form.get('id', None)
         password = request.form.get('password', None)
+
+        if not id or not password:
+            flash('잘못된 요청입니다.', 'danger')
+            return redirect(url_for('login'))
 
         password_hash = md5.new(password).hexdigest()
 
@@ -102,6 +114,10 @@ def write():
         return redirect(url_for('login'))
 
     content = request.form.get('content', None)
+
+    if not content:
+        flash('잘못된 요청입니다.', 'danger')
+        return redirect(url_for('index'))
 
     db.posts.insert({
         'content': content,
