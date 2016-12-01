@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang=ko>
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3.3.7/css/bootstrap.min.css') }}">
+  <style type="text/css">
+    .container {
+      max-width: 680px;
+    }
+  </style>
+  {% block style %}
+  {% endblock %}
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class=container>
+      <div class=navbar-header>
+        <button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target=#navbar-collapse>
+          <span class=icon-bar></span>
+          <span class=icon-bar></span>
+          <span class=icon-bar></span>
+        </button>
+        <a class=navbar-brand href="{{ url_for('index') }}">Tweeter</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id=navbar-collapse>
+        {% if user %}
+          <ul class="nav navbar-nav navbar-right">
+            <li class=dropdown>
+              <a id=user-name class=dropdown-toggle data-toggle=dropdown role=button>{{ user.name }} <span class=caret></span></a>
+              <ul class=dropdown-menu>
+                <li><a href="{{ url_for('logout') }}">로그아웃</a></li>
+              </ul>
+            </li>
+          </ul>
+        {% else %}
+          <p class="navbar-text navbar-right"><a href="{{ url_for('register') }}">회원가입</a> 또는 <a href="{{ url_for('login') }}">로그인</a>해주세요.</p>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class=container>
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade in" role=alert>
+        <button type=button class=close data-dismiss=alert><span>&times;</span></button>
+        {{ message }}
+      </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block body %}
+  {% endblock %}
+</body>
+</html>
