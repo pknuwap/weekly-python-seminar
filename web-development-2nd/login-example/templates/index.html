@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}메인{% endblock %}
+{% block style %}
+  <style type="text/css">
+    .panel:last-child {
+      margin-bottom: 50px;
+    }
+    #write-form {
+      margin-bottom: 20px;
+    }
+  </style>
+{% endblock %}
+{% block body %}
+  <div class=container>
+    {% if user %}
+      <form id=write-form action="{{ url_for('write') }}" method=post>
+        <div class=form-group>
+          <textarea id=content name=content class=form-control placeholder="현재 상태를 공유하세요" required></textarea>
+        </div>
+        <button id=write type=submit class="btn btn-primary btn-block">글 쓰기</button>
+      </form>
+    {% endif %}
+
+    {% if posts %}
+      {% for post in posts %}
+        <div class="panel panel-default panel-info">
+          <div class=panel-heading>
+            {{ db.users.find({'id': post.author}).next().name }}
+            <span class=text-muted data-toggle=tooltip data-placement=right title="{{ post._id.generation_time|strftime }}">
+              {{ post._id.generation_time|humanize }}
+            </span>
+            {% if user.id == post.author %}
+              <a class="pull-right" href="{{ url_for('delete', id=post._id) }}"><span class="glyphicon glyphicon-remove text-red"></span></a>
+            {% endif %}
+          </div>
+          <div class=panel-body>
+            {{ post.content }}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h3 class="text-center text-muted">등록된 게시글이 없습니다.</h3>
+    {% endif %}
+  </div>
+
+  <script>
+    $("[data-toggle=\"tooltip\"]").tooltip();
+  </script>
+{% endblock %}
