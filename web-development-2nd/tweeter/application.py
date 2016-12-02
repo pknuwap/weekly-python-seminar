@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import sys
 import md5
 
 from flask import Flask
@@ -12,6 +13,9 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 
 import arrow
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
