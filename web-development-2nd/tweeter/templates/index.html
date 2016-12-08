@@ -25,7 +25,7 @@
       {% for post in posts %}
         <div class="panel panel-default panel-info">
           <div class=panel-heading>
-            {{ db.users.find({'id': post.author}).next().name }}
+            {{ db.users.find({'id': post.author}).next().name }} ({{ post.author }})
             <span class=text-muted data-toggle=tooltip data-placement=right title="{{ post._id.generation_time|strftime }}">
               {{ post._id.generation_time|humanize }}
             </span>
